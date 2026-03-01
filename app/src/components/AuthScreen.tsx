@@ -1,7 +1,7 @@
 import { useAuth } from '../contexts/AuthContext';
 
 export function AuthScreen() {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signingIn } = useAuth();
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh px-6 max-w-sm mx-auto">
@@ -22,18 +22,28 @@ export function AuthScreen() {
       <div className="w-full space-y-3">
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-2.5 px-4 py-3.5 rounded-xl bg-accent text-white text-sm font-semibold active:scale-[0.98] transition-all"
+          disabled={signingIn}
+          className="w-full flex items-center justify-center gap-2.5 px-4 py-3.5 rounded-xl bg-accent text-white text-sm font-semibold active:scale-[0.98] transition-all disabled:opacity-50"
         >
-          <GoogleIcon />
-          Sign in with Google
+          {signingIn ? (
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <GoogleIcon />
+          )}
+          {signingIn ? 'Signing in...' : 'Sign in with Google'}
         </button>
 
         <button
           onClick={signInWithGoogle}
-          className="w-full flex items-center justify-center gap-2.5 px-4 py-3.5 rounded-xl bg-bg-card border border-border text-text-primary text-sm font-semibold hover:bg-bg-card-hover active:scale-[0.98] transition-all"
+          disabled={signingIn}
+          className="w-full flex items-center justify-center gap-2.5 px-4 py-3.5 rounded-xl bg-bg-card border border-border text-text-primary text-sm font-semibold hover:bg-bg-card-hover active:scale-[0.98] transition-all disabled:opacity-50"
         >
-          <GoogleIcon />
-          Sign up with Google
+          {signingIn ? (
+            <div className="w-5 h-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <GoogleIcon />
+          )}
+          {signingIn ? 'Please wait...' : 'Sign up with Google'}
         </button>
       </div>
 

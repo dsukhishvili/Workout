@@ -12,11 +12,18 @@ function getTodayIndex(): number {
 }
 
 export default function App() {
-  const { user, loading } = useAuth();
+  const { user, loading, justSignedIn, clearJustSignedIn } = useAuth();
   const [selectedDay, setSelectedDay] = useState(getTodayIndex);
   const contentRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+
+  useEffect(() => {
+    if (justSignedIn) {
+      const timer = setTimeout(clearJustSignedIn, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [justSignedIn, clearJustSignedIn]);
 
   const navigateDay = useCallback((direction: 1 | -1) => {
     setSelectedDay(prev => {
@@ -67,6 +74,22 @@ export default function App() {
 
   if (!user) {
     return <AuthScreen />;
+  }
+
+  if (justSignedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center h-dvh px-6 text-center">
+        <div className="w-16 h-16 rounded-full bg-success/15 flex items-center justify-center mb-5 animate-[scale-in_0.3s_ease-out]">
+          <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 className="text-xl font-bold text-text-primary">
+          Welcome{user.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}!
+        </h2>
+        <p className="text-sm text-text-secondary mt-2">Let's crush today's workout</p>
+      </div>
+    );
   }
 
   return (
