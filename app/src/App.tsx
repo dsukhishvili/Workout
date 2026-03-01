@@ -3,6 +3,8 @@ import { weekPlan } from './data/workouts';
 import { DayNavigation } from './components/DayNavigation';
 import { DayView } from './components/DayView';
 import { UserMenu } from './components/UserMenu';
+import { AuthScreen } from './components/AuthScreen';
+import { useAuth } from './contexts/AuthContext';
 
 function getTodayIndex(): number {
   const jsDay = new Date().getDay();
@@ -10,6 +12,7 @@ function getTodayIndex(): number {
 }
 
 export default function App() {
+  const { user, loading } = useAuth();
   const [selectedDay, setSelectedDay] = useState(getTodayIndex);
   const contentRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
@@ -53,6 +56,18 @@ export default function App() {
   }, [selectedDay]);
 
   const day = weekPlan[selectedDay];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-dvh">
+        <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthScreen />;
+  }
 
   return (
     <div className="flex flex-col h-dvh max-w-lg mx-auto">
