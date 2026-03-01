@@ -18,6 +18,7 @@ export function UserMenu() {
   if (!user) {
     return (
       <button
+        data-signin
         onClick={signInWithGoogle}
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-bg-card border border-border text-xs font-medium text-text-primary hover:bg-bg-card-hover active:scale-95 transition-all"
       >

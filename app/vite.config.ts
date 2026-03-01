@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/Workout/',
+  base: process.env.BASE_URL || '/',
   plugins: [react(), tailwindcss()],
   build: {
     rollupOptions: {
